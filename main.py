@@ -105,6 +105,7 @@ def delete():
        mysqldb.close()
 
 def show():
+        listBox.delete(*listBox.get_children())
         mysqldb = mysql.connector.connect(host="localhost", user="root", password="", database="lumayagssis")
         mycursor = mysqldb.cursor()
         mycursor.execute("SELECT * FROM record")
@@ -117,6 +118,7 @@ def show():
             mysqldb.close()
 
 def search():
+    listBox.delete(*listBox.get_children())
     studid = e1.get()
 
     mysqldb=mysql.connector.connect(host="localhost",user="root",password="",database="lumayagssis")
@@ -226,8 +228,8 @@ def update1():
     mycursor=mysqldb.cursor()
 
     try:
-       sql = "Update  courses set course_description= %s where course_code= %s"
-       val = (studcc,studc)
+       sql = "UPDATE courses SET course_description=%s WHERE  course_code=%s"
+       val = (studc,studcc)
        mycursor.execute(sql, val)
        mysqldb.commit()
        lastid = mycursor.lastrowid
@@ -266,6 +268,7 @@ def delete1():
        mysqldb.close()
 
 def show1():
+        listBox1.delete(*listBox1.get_children())
         mysqldb = mysql.connector.connect(host="localhost", user="root", password="", database="lumayagssis")
         mycursor = mysqldb.cursor()
         mycursor.execute("SELECT * FROM courses")
@@ -278,6 +281,7 @@ def show1():
             mysqldb.close()
 
 def search1():
+    listBox1.delete(*listBox1.get_children())
     studcc = a1.get()
 
     mysqldb=mysql.connector.connect(host="localhost",user="root",password="",database="lumayagssis")
@@ -292,6 +296,7 @@ def search1():
     for i, (course_code, course_description) in enumerate(records):
         listBox1.insert("", END, values=(course_code, course_description))
         mysqldb.close()
+
 
 # ----------
 global a1
@@ -317,7 +322,7 @@ Button(root, text="DISPLAY",font=('Courier',12,'bold'),command = show1,height=3,
 
 #Columns
 cols1 = ('Course Code', 'Course Description')
-listBox1 = ttk.Treeview(root, columns=cols1, show='headings' )
+listBox1 = ttk.Treeview(root, columns=cols1, show='headings')
 
 for col in cols1:
     listBox1.heading(col, text=col)
