@@ -134,6 +134,23 @@ def search():
         listBox.insert("", END, values=(ID, Name, Gender, Yearlevel, Coursecode))
         mysqldb.close()
 
+def searchstud1():
+    listBox.delete(*listBox.get_children())
+    studcourse = e5.get()
+
+    mysqldb=mysql.connector.connect(host="localhost",user="root",password="",database="lumayagssis")
+    mycursor=mysqldb.cursor()
+
+    sql = "select * from record where Coursecode= %s"
+    val = (studcourse,)
+    mycursor.execute(sql, val)
+    records = mycursor.fetchall()
+    print(records)
+
+    for i, (ID, Name, Gender, Yearlevel, Coursecode) in enumerate(records):
+        listBox.insert("", END, values=(ID, Name, Gender, Yearlevel, Coursecode))
+        mysqldb.close()
+
 
 root = Tk()
 root.geometry("1025x750")
@@ -172,6 +189,7 @@ Button(root, text="UPDATE",font=('Courier',12,'bold'),command = update,height=3,
 Button(root, text="DELETE",font=('Courier',12,'bold'),command = delete,height=3, width= 13).place(x=620, y=80)
 Button(root, text="Search by ID:",font=('Courier',10,'bold'),command = search,height=1, width= 13).place(x=10, y=10)
 Button(root, text="DISPLAY",font=('Courier',12,'bold'),command = show,height=3, width= 13).place(x=770, y=80)
+
 
 #Columns
 cols = ('ID', 'Name', 'Gender','Yearlevel', 'Coursecode')
@@ -313,18 +331,24 @@ a1.place(x=350, y=420)
 a2 = Entry(root)
 a2.place(x=350, y=460)
 
+searchstud = Entry(root)
+searchstud.place(x=550, y=460)
+
 #Buttons
 Button(root, text="ADD",font=('Courier',12,'bold'),command = Add1,height=3, width= 13).place(x=800, y=430)
 Button(root, text="UPDATE",font=('Courier',12,'bold'),command = update1,height=3, width= 13).place(x=800, y=510)
 Button(root, text="DELETE",font=('Courier',12,'bold'),command = delete1,height=3, width= 13).place(x=800, y=590)
 Button(root, text="Search by Code:",font=('Courier',10,'bold'),command = search1,height=1, width= 15).place(x=210, y=420)
 Button(root, text="DISPLAY",font=('Courier',12,'bold'),command = show1,height=3, width= 13).place(x=800, y=670)
+Button(root, text="Search Student by Code:",font=('Courier',10,'bold'),command = searchstud1,height=1, width= 23).place(x=500, y=420)
+
 
 #Columns
 cols1 = ('Course Code', 'Course Description')
 listBox1 = ttk.Treeview(root, columns=cols1, show='headings')
 
 for col in cols1:
+    listBox1.column(col,width=380)
     listBox1.heading(col, text=col)
     listBox1.grid(row=1, column=0, columnspan=2)
     listBox1.place(x=10, y=500)
