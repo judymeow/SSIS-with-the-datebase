@@ -3,6 +3,7 @@ from tkinter import ttk, messagebox
 import mysql.connector
 from tkinter import *
 
+########################################################################################################################
 def GetValue(event):
     e1.delete(0, END)
     e2.delete(0, END)
@@ -133,7 +134,7 @@ def search():
 
 
 root = Tk()
-root.geometry("1025x450")
+root.geometry("1025x750")
 root.resizable(False,False)
 global e1
 global e2
@@ -177,8 +178,155 @@ listBox = ttk.Treeview(root, columns=cols, show='headings' )
 for col in cols:
     listBox.heading(col, text=col)
     listBox.grid(row=1, column=0, columnspan=2)
-    listBox.place(x=10, y=200)
+    listBox.place(x=10, y=180)
 
 search()
+show()
 listBox.bind('<Double-Button-1>', GetValue)
+
+#########################################################################################################################
+
+#COURSES
+def GetValue1(event):
+    a1.delete(0, END)
+    a2.delete(0, END)
+    row_id = listBox.selection()[0]
+    select = listBox.set(row_id)
+    a1.insert(0,select['Course Code'])
+    a2.insert(0,select['Course Description'])
+
+
+def Add1():
+    studcc = a1.get()
+    studc = a2.get()
+
+    mysqldb=mysql.connector.connect(host="localhost",user="root",password="",database="lumayagssis")
+    mycursor=mysqldb.cursor()
+
+    try:
+       sql = "INSERT INTO  courses (course_code,course_description) VALUES (%s, %s)"
+       val = (studcc,studc)
+       mycursor.execute(sql, val)
+       mysqldb.commit()
+       lastid = mycursor.lastrowid
+       messagebox.showinfo("Data Entry Form","Added Successfully!")
+       a1.delete(0, END)
+       a2.delete(0, END)
+       a1.focus_set()
+    except Exception as e:
+       print(e)
+       mysqldb.rollback()
+       mysqldb.close()
+
+
+def update1():
+    studcc = a1.get()
+    studc = a2.get()
+
+    mysqldb=mysql.connector.connect(host="localhost",user="root",password="",database="lumayagssis")
+    mycursor=mysqldb.cursor()
+
+    try:
+       sql = "Update  courses set course_description= %s where course_code= %s"
+       val = (studcc,studc)
+       mycursor.execute(sql, val)
+       mysqldb.commit()
+       lastid = mycursor.lastrowid
+       messagebox.showinfo("Data Entry Form","Updated Successfully!")
+       a1.delete(0, END)
+       a2.delete(0, END)
+       a1.focus_set()
+
+    except Exception as e:
+       print(e)
+       mysqldb.rollback()
+       mysqldb.close()
+
+def delete1():
+    studcc = a1.get()
+
+    mysqldb=mysql.connector.connect(host="localhost",user="root",password="",database="lumayagssis")
+    mycursor=mysqldb.cursor()
+
+    try:
+       sql = "delete from courses where course_code= %s"
+       val = (studcc,)
+       mycursor.execute(sql, val)
+       mysqldb.commit()
+       lastid = mycursor.lastrowid
+       messagebox.showinfo("Data Entry Form","Deleted Successfully!")
+
+       a1.delete(0, END)
+       a2.delete(0, END)
+       a1.focus_set()
+
+    except Exception as e:
+
+       print(e)
+       mysqldb.rollback()
+       mysqldb.close()
+
+def show1():
+        mysqldb = mysql.connector.connect(host="localhost", user="root", password="", database="lumayagssis")
+        mycursor = mysqldb.cursor()
+        mycursor.execute("SELECT * FROM courses")
+        records = mycursor.fetchall()
+        print(records)
+
+
+        for i, (course_code, course_description) in enumerate(records, start=1):
+            listBox.insert("",END, values=(course_code, course_description))
+            mysqldb.close()
+
+def search1():
+    studcc = a1.get()
+
+    mysqldb=mysql.connector.connect(host="localhost",user="root",password="",database="lumayagssis")
+    mycursor=mysqldb.cursor()
+
+    sql = "select * from courses where course_code= %s"
+    val = (studcc,)
+    mycursor.execute(sql, val)
+    records = mycursor.fetchall()
+    print(records)
+
+    for i, (course_code, course_description) in enumerate(records):
+        listBox.insert("", END, values=(course_code, course_description))
+        mysqldb.close()
+
+# ----------
+global a1
+global a2
+
+tk.Label(root, text="Courses", fg="darkblue", font=(None, 30)).place(x=10, y=410)
+
+tk.Label(root, text="Course Description").place(x=210, y=460)
+
+
+a1 = Entry(root)
+a1.place(x=350, y=420)
+
+a2 = Entry(root)
+a2.place(x=350, y=460)
+
+#Buttons
+Button(root, text="ADD",font=('Courier',12,'bold'),command = Add1,height=3, width= 13).place(x=800, y=430)
+Button(root, text="UPDATE",font=('Courier',12,'bold'),command = update1,height=3, width= 13).place(x=800, y=510)
+Button(root, text="DELETE",font=('Courier',12,'bold'),command = delete1,height=3, width= 13).place(x=800, y=590)
+Button(root, text="Search by Code:",font=('Courier',10,'bold'),command = search1,height=1, width= 15).place(x=210, y=420)
+Button(root, text="DISPLAY",font=('Courier',12,'bold'),command = show1,height=3, width= 13).place(x=800, y=670)
+
+#Columns
+cols = ('Course Code', 'Course Description')
+listBox = ttk.Treeview(root, columns=cols, show='headings' )
+
+for col in cols:
+    listBox.heading(col, text=col)
+    listBox.grid(row=1, column=0, columnspan=2)
+    listBox.place(x=10, y=500)
+
+
+search1()
+show1()
+listBox.bind('<Double-Button-1>', GetValue1)
 root.mainloop()
