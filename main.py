@@ -181,7 +181,6 @@ for col in cols:
     listBox.place(x=10, y=180)
 
 search()
-show()
 listBox.bind('<Double-Button-1>', GetValue)
 
 #########################################################################################################################
@@ -190,8 +189,8 @@ listBox.bind('<Double-Button-1>', GetValue)
 def GetValue1(event):
     a1.delete(0, END)
     a2.delete(0, END)
-    row_id = listBox.selection()[0]
-    select = listBox.set(row_id)
+    row_id = listBox1.selection()[0]
+    select = listBox1.set(row_id)
     a1.insert(0,select['Course Code'])
     a2.insert(0,select['Course Description'])
 
@@ -275,7 +274,7 @@ def show1():
 
 
         for i, (course_code, course_description) in enumerate(records, start=1):
-            listBox.insert("",END, values=(course_code, course_description))
+            listBox1.insert("",END, values=(course_code, course_description))
             mysqldb.close()
 
 def search1():
@@ -291,7 +290,7 @@ def search1():
     print(records)
 
     for i, (course_code, course_description) in enumerate(records):
-        listBox.insert("", END, values=(course_code, course_description))
+        listBox1.insert("", END, values=(course_code, course_description))
         mysqldb.close()
 
 # ----------
@@ -317,16 +316,15 @@ Button(root, text="Search by Code:",font=('Courier',10,'bold'),command = search1
 Button(root, text="DISPLAY",font=('Courier',12,'bold'),command = show1,height=3, width= 13).place(x=800, y=670)
 
 #Columns
-cols = ('Course Code', 'Course Description')
-listBox = ttk.Treeview(root, columns=cols, show='headings' )
+cols1 = ('Course Code', 'Course Description')
+listBox1 = ttk.Treeview(root, columns=cols1, show='headings' )
 
-for col in cols:
-    listBox.heading(col, text=col)
-    listBox.grid(row=1, column=0, columnspan=2)
-    listBox.place(x=10, y=500)
+for col in cols1:
+    listBox1.heading(col, text=col)
+    listBox1.grid(row=1, column=0, columnspan=2)
+    listBox1.place(x=10, y=500)
 
 
 search1()
-show1()
-listBox.bind('<Double-Button-1>', GetValue1)
+listBox1.bind('<Double-Button-1>', GetValue1)
 root.mainloop()
