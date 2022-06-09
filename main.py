@@ -147,7 +147,7 @@ def searchstud1():
     records = mycursor.fetchall()
     print(records)
 
-    for i, (ID, Name, Gender, Yearlevel, Coursecode) in enumerate(records):
+    for i, (ID, Name, Gender, Yearlevel, Coursecode) in enumerate(records, start=1):
         listBox.insert("", END, values=(ID, Name, Gender, Yearlevel, Coursecode))
         mysqldb.close()
 
@@ -160,6 +160,7 @@ global e2
 global e3
 global e4
 global e5
+
 
 tk.Label(root, text="Student Information System", fg="darkblue", font=(None, 40)).place(x=300, y=5)
 
@@ -183,12 +184,14 @@ e4.place(x=140, y=100)
 e5 = Entry(root)
 e5.place(x=140, y=130)
 
+
 #Buttons
 Button(root, text="ADD",font=('Courier',12,'bold'),command = Add,height=3, width= 13).place(x=320, y=80)
 Button(root, text="UPDATE",font=('Courier',12,'bold'),command = update,height=3, width= 13).place(x=470, y=80)
 Button(root, text="DELETE",font=('Courier',12,'bold'),command = delete,height=3, width= 13).place(x=620, y=80)
 Button(root, text="Search by ID:",font=('Courier',10,'bold'),command = search,height=1, width= 13).place(x=10, y=10)
 Button(root, text="DISPLAY",font=('Courier',12,'bold'),command = show,height=3, width= 13).place(x=770, y=80)
+Button(root, text="Search Student by Code",font=('Courier',10,'bold'),command = searchstud1,height=1, width= 23).place(x=100, y=155)
 
 
 #Columns
@@ -198,7 +201,7 @@ listBox = ttk.Treeview(root, columns=cols, show='headings' )
 for col in cols:
     listBox.heading(col, text=col)
     listBox.grid(row=1, column=0, columnspan=2)
-    listBox.place(x=10, y=180)
+    listBox.place(x=10, y=195)
 
 search()
 listBox.bind('<Double-Button-1>', GetValue)
@@ -223,7 +226,7 @@ def Add1():
     mycursor=mysqldb.cursor()
 
     try:
-       sql = "INSERT INTO  courses (course_code,course_description) VALUES (%s, %s)"
+       sql = "INSERT INTO  courses (Coursecode,course_description) VALUES (%s, %s)"
        val = (studcc,studc)
        mycursor.execute(sql, val)
        mysqldb.commit()
@@ -246,7 +249,7 @@ def update1():
     mycursor=mysqldb.cursor()
 
     try:
-       sql = "UPDATE courses SET course_description=%s WHERE  course_code=%s"
+       sql = "UPDATE courses SET course_description=%s WHERE  Coursecode=%s"
        val = (studc,studcc)
        mycursor.execute(sql, val)
        mysqldb.commit()
@@ -268,7 +271,7 @@ def delete1():
     mycursor=mysqldb.cursor()
 
     try:
-       sql = "delete from courses where course_code= %s"
+       sql = "delete from courses where Coursecode= %s"
        val = (studcc,)
        mycursor.execute(sql, val)
        mysqldb.commit()
@@ -294,8 +297,8 @@ def show1():
         print(records)
 
 
-        for i, (course_code, course_description) in enumerate(records, start=1):
-            listBox1.insert("",END, values=(course_code, course_description))
+        for i, (Coursecode, course_description) in enumerate(records, start=1):
+            listBox1.insert("",END, values=(Coursecode, course_description))
             mysqldb.close()
 
 def search1():
@@ -305,14 +308,14 @@ def search1():
     mysqldb=mysql.connector.connect(host="localhost",user="root",password="",database="lumayagssis")
     mycursor=mysqldb.cursor()
 
-    sql = "select * from courses where course_code= %s"
+    sql = "select * from courses where Coursecode= %s"
     val = (studcc,)
     mycursor.execute(sql, val)
     records = mycursor.fetchall()
     print(records)
 
-    for i, (course_code, course_description) in enumerate(records):
-        listBox1.insert("", END, values=(course_code, course_description))
+    for i, (Coursecode, course_description) in enumerate(records, start=1):
+        listBox1.insert("", END, values=(Coursecode, course_description))
         mysqldb.close()
 
 
@@ -320,27 +323,24 @@ def search1():
 global a1
 global a2
 
-tk.Label(root, text="Courses", fg="darkblue", font=(None, 30)).place(x=10, y=410)
+tk.Label(root, text="Courses", fg="darkblue", font=(None, 35)).place(x=20, y=430)
 
-tk.Label(root, text="Course Description").place(x=210, y=460)
+tk.Label(root, text="Course Description").place(x=520, y=450)
 
 
 a1 = Entry(root)
-a1.place(x=350, y=420)
+a1.place(x=355, y=450)
 
 a2 = Entry(root)
-a2.place(x=350, y=460)
+a2.place(x=630, y=450)
 
-searchstud = Entry(root)
-searchstud.place(x=550, y=460)
 
 #Buttons
 Button(root, text="ADD",font=('Courier',12,'bold'),command = Add1,height=3, width= 13).place(x=800, y=430)
 Button(root, text="UPDATE",font=('Courier',12,'bold'),command = update1,height=3, width= 13).place(x=800, y=510)
 Button(root, text="DELETE",font=('Courier',12,'bold'),command = delete1,height=3, width= 13).place(x=800, y=590)
-Button(root, text="Search by Code:",font=('Courier',10,'bold'),command = search1,height=1, width= 15).place(x=210, y=420)
+Button(root, text="Search by Code:",font=('Courier',10,'bold'),command = search1,height=1, width= 15).place(x=215, y=445)
 Button(root, text="DISPLAY",font=('Courier',12,'bold'),command = show1,height=3, width= 13).place(x=800, y=670)
-Button(root, text="Search Student by Code:",font=('Courier',10,'bold'),command = searchstud1,height=1, width= 23).place(x=500, y=420)
 
 
 #Columns
