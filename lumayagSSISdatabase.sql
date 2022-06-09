@@ -16,13 +16,13 @@
 
 -- Dumping structure for table lumayagssis.courses
 CREATE TABLE IF NOT EXISTS `courses` (
-  `course_code` varchar(10) NOT NULL,
+  `Coursecode` varchar(10) NOT NULL,
   `course_description` varchar(250) NOT NULL,
-  PRIMARY KEY (`course_code`)
+  PRIMARY KEY (`Coursecode`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Dumping data for table lumayagssis.courses: ~5 rows (approximately)
-INSERT INTO `courses` (`course_code`, `course_description`) VALUES
+INSERT INTO `courses` (`Coursecode`, `course_description`) VALUES
 	('BSCA', 'Bachelor of Science in Computer Application'),
 	('BSEE', 'Bachelor of Science in Electrical Engineering'),
 	('BSIT', 'Bachelor of Science in Information Technology'),
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `record` (
   PRIMARY KEY (`ID`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table lumayagssis.record: ~62 rows (approximately)
+-- Dumping data for table lumayagssis.record: ~63 rows (approximately)
 INSERT INTO `record` (`ID`, `Name`, `Gender`, `Yearlevel`, `Coursecode`) VALUES
 	('2019-0021', 'Arcamo, Francis Ann Emmanuel G.', 'Male', '3', 'BSSTAT'),
 	('2019-0212', 'Maisog, John Conrad Seg B.', 'Male', '3', 'BSN'),
@@ -101,8 +101,7 @@ INSERT INTO `record` (`ID`, `Name`, `Gender`, `Yearlevel`, `Coursecode`) VALUES
 	('2020-4872', 'Bayal, Jerel Jane Maning', 'Female', '2', 'BSSTAT'),
 	('2020-4906', 'Tala, Lynn Stefanny Dela Pe?a', 'Female', '2', 'BSIT'),
 	('2020-4981', 'Vequizo, Kiesha Pearl B', 'Female', '2', 'BSCE'),
-	('2020-5181', 'Manos, Shiela Marie Bernales', 'Female', '2', 'BSSTAT'),
-	('2028-9238', 'fenjf', 'male', '4', 'BSSTAT');
+	('2020-5181', 'Manos, Shiela Marie Bernales', 'Female', '2', 'BSSTAT');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
